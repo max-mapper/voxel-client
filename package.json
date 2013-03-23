@@ -1,6 +1,6 @@
 {
   "name": "voxel-client",
-  "description": "multiplayer client for voxel-server"
+  "description": "multiplayer client for voxel-server",
   "version": "0.0.1",
   "dependencies": {
     "voxel-engine": "0.5.7",
