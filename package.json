@@ -3,14 +3,21 @@
   "description": "multiplayer client for voxel-server",
   "version": "0.0.1",
   "dependencies": {
-    "voxel-engine": "0.5.7",
-    "voxel-crunch": "0.1.0",
+    "voxel-engine": "0.16.x",
     "websocket-stream": "0.0.5",
     "ws": "0.4.25",
     "hat": "0.0.3",
-    "duplex-emitter": "0.1.6"
+    "duplex-emitter": "0.1.6",
+    "voxel-crunch": "~0.1.1"
   },
   "engines": {
     "node": "0.8.x"
+  },
+  "scripts": {
+    "start": "cd www && beefy demo.js:bundle.js"
+  },
+  "devDependencies": {
+    "browserify": "~2.10.2",
+    "beefy": "0.0.11"
   }
 }
