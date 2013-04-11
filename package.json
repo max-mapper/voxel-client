@@ -7,19 +7,19 @@
     "websocket-stream": "0.0.5",
     "ws": "0.4.25",
     "hat": "0.0.3",
-    "duplex-emitter": "0.1.9",
+    "duplex-emitter": "~0.1.9",
     "voxel-crunch": "~0.1.1",
-	"toolbar": "0.0.5",
-	"voxel-highlight": "0.0.8",
-	"minecraft-skin": "0.1.2",
-	"voxel-player": "0.0.2",
-	"extend": "1.1.3"
+    "toolbar": "0.0.5",
+    "voxel-highlight": "0.0.8",
+    "minecraft-skin": "0.1.2",
+    "voxel-player": "0.1.0",
+    "extend": "1.1.3"
   },
   "engines": {
     "node": "0.8.x"
   },
   "scripts": {
-    "start": "cd www && beefy test.js:bundle.js --live -- -d"
+    "start": "cd www && beefy demo.js:bundle.js -- -d"
   },
   "devDependencies": {
     "browserify": "~2.10.2",
