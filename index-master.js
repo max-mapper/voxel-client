@@ -14,9 +14,9 @@ var texturePath = "/textures/"
 
 module.exports = Client
 
-function Client(server, game) {
+function Client(server) {
   if(!(this instanceof Client)) {
-    return new Client(server, game)
+    return new Client(server)
   }
   // this.blockSelector = toolbar({el: '#tools'})
   this.playerID
@@ -27,20 +27,20 @@ function Client(server, game) {
   this.lerpPercent = 0.1
   this.server = server || 'ws://' + url.parse(window.location.href).host
   this.others = {}
-  this.connect(server, game)
+  this.connect(server)
   this.game
   window.others = this.others
 }
 
-Client.prototype.connect = function(server, game) {
+Client.prototype.connect = function(server) {
   var self = this
   var socket = websocket(server)
   socket.on('end', function() { self.connected = false })
   this.socket = socket
-  this.bindEvents(socket, game)
+  this.bindEvents(socket)
 }
 
-Client.prototype.bindEvents = function(socket, game) {
+Client.prototype.bindEvents = function(socket) {
   var self = this
   this.emitter = duplexEmitter(socket)
   var emitter = this.emitter
@@ -49,24 +49,13 @@ Client.prototype.bindEvents = function(socket, game) {
   emitter.on('id', function(id) {
     console.log('got id', id)
     self.playerID = id
-    if (game != null) {
-  	  self.game = game
-  	  console.log("Sending local settings to the server.")
-  	  emitter.emit('clientSettings', self.game.settings)
-    } else {
-  	  emitter.emit('clientSettings', null)
-    }
   })
   
   emitter.on('settings', function(settings) {
     settings.texturePath = texturePath
     settings.generateChunks = false
-	//deserialise the voxel.generator function.
-	if (settings.generatorToString != null) {
-		settings.generate = eval("(" + settings.generatorToString + ")")
-	}
-    self.game = self.createGame(settings, game)	
-	emitter.emit('created')
+    self.game = self.createGame(settings)
+    emitter.emit('created')
     emitter.on('chunk', function(encoded, chunk) {
       var voxels = crunch.decode(encoded, chunk.length)
       chunk.voxels = voxels
@@ -80,12 +69,11 @@ Client.prototype.bindEvents = function(socket, game) {
   })
 }
 
-Client.prototype.createGame = function(settings, game) {
+Client.prototype.createGame = function(options) {
   var self = this
   var emitter = this.emitter
-  settings.controlsDisabled = false
-  self.game = engine(settings)
-  self.game.settings = settings
+  options.controlsDisabled = false
+  window.game = self.game = engine(options)
   function sendState() {
     if (!self.connected) return
     var player = self.game.controls.target()
