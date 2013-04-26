@@ -2,13 +2,37 @@ var createClient = require('../')
 var highlight = require('voxel-highlight')
 var extend = require('extend')
 var voxelPlayer = require('voxel-player')
+var createGame = require('voxel-engine')
+var texturePath = require('painterly-textures')(__dirname)
+var texturePath = "textures/"
+var voxel = require('voxel')
 var game
 
 module.exports = function(opts, setup) {
   setup = setup || defaultSetup
   opts = extend({}, opts || {})
-
-  var client = createClient(opts.server || "ws://localhost:8080/")
+  
+  var settings = {
+	//Sphere is on this client, Valley is default on server
+  	generate: voxel.generator['Sphere'],
+  	chunkDistance: 2,
+  	materials: [
+  	['grass', 'dirt', 'grass_dirt'],
+  	'obsidian',
+  	'brick',
+  	'grass'
+  	],
+  	texturePath: texturePath,
+  	worldOrigin: [0, 0, 0],
+  	controls: { discreteFire: true },
+	avatarInitialPosition: [2, 20, 2],
+	resetSettings: true
+  }
+  
+  var game = {}
+  settings.generatorToString = settings.generate.toString()
+  game.settings = settings
+  var client = createClient(opts.server || "ws://localhost:8080/", game)
   
   client.emitter.on('noMoreChunks', function(id) {
     console.log("Attaching to the container and creating player")
@@ -20,11 +44,11 @@ module.exports = function(opts, setup) {
 
     // create the player from a minecraft skin file and tell the
     // game to use it as the main player
-    var avatar = createPlayer('player.png')
+    var avatar = createPlayer('viking.png')
     window.avatar = avatar
     avatar.possess()
-    var settings = game.settings.avatarInitialPosition
-    avatar.position.set(settings[0],settings[1],settings[2])
+    avatar.position.set(2, 20, 4)
+
     setup(game, avatar, client)
   })
 
