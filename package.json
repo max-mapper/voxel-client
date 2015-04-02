@@ -8,7 +8,7 @@
     "ws": "0.4.25",
     "hat": "0.0.3",
     "duplex-emitter": "~0.1.9",
-    "voxel-crunch": "~0.1.1",
+    "voxel-crunch": "~0.2.1",
     "toolbar": "0.0.5",
     "voxel-highlight": "0.0.8",
     "minecraft-skin": "0.1.2",

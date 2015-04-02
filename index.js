@@ -68,7 +68,7 @@ Client.prototype.bindEvents = function(socket, game) {
     self.game = self.createGame(settings, game)	
 	emitter.emit('created')
     emitter.on('chunk', function(encoded, chunk) {
-      var voxels = crunch.decode(encoded, chunk.length)
+      var voxels = crunch.decode(encoded, new Uint32Array(chunk.length))
       chunk.voxels = voxels
       self.game.showChunk(chunk)
     })
